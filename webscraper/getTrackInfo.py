@@ -10,7 +10,8 @@ from multiprocessing import Process, Queue, Pool
 from bs4 import BeautifulSoup
 
 mongoClient = pymongo.MongoClient()
-db = mongoClient.scAnalytics
+mongoClient.soundcloudninjas.authenticate('soundcloudninjas', 'p6BxbwUP')
+db = mongoClient.soundcloudninjas
 
 #trackSnapshotsDb = db.trackSnapshots
 activeTrackDirectory = db.activeTrackDirectory
@@ -290,10 +291,10 @@ def getTrackPlayHistory(trackId):
 
 if __name__ == '__main__':
 
-	#getAllSnapshots()
+	getAllSnapshots()
 
 	#getTracksWithGteXPlays(500)
 
-	getTrackPlayHistory(225624884)
+	#getTrackPlayHistory(225624884)
 
 	#trackSnapshot('https://soundcloud.com/jaxjones/yeah-yeah-yeah')

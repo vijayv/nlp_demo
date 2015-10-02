@@ -33,7 +33,8 @@ print
 
 # initialize db
 mongoClient = pymongo.MongoClient()
-db = mongoClient.scAnalytics
+mongoClient.soundcloudninjas.authenticate('soundcloudninjas', 'p6BxbwUP')
+db = mongoClient.soundcloudninjas
 
 # post frequency test db
 uploadRate = db.uploadRate
