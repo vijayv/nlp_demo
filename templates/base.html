@@ -1,0 +1,15 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{ title }} - SCA</title>
+    {% else %}
+    <title>Welcome to Sound Cloud Analytics</title>
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/main.js') }}">
+  </head>
+  <body>
+    <h1>Sound Cloud Analytics</h1>
+    {% block content %}{% endblock %}
+  </body>
+</html>
