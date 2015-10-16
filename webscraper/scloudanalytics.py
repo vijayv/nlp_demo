@@ -32,9 +32,15 @@ print 'Client Username:', client.get('/me').username
 print
 
 # initialize db
-mongoClient = pymongo.MongoClient()
-mongoClient.soundcloudninjas.authenticate('soundcloudninjas', 'p6BxbwUP')
-db = mongoClient.soundcloudninjas
+mongoClient = pymongo.MongoClient('ds031883.mongolab.com',
+								 port=31883,
+			                     connectTimeoutMS=30000,
+			                     socketTimeoutMS=None,
+			                     socketKeepAlive=True)
+db = mongoClient.soundcloudanalytics
+db.authenticate('soundcloudninjas',
+				password='gunners123',
+				mechanism='SCRAM-SHA-1')
 
 # post frequency test db
 uploadRate = db.uploadRate
@@ -74,7 +80,7 @@ def startPostFrequencyTest(cycles=1):
 		tempPostInfoDb = {}
 		tempPostInfoDb['timestamp'] = timestamp2
 		tempPostInfoDb['trackId'] = postId
-		postInfoDb.append(tempPostInfoDb)		
+		postInfoDb.append(tempPostInfoDb)
 
 		counter += 1
 
@@ -427,7 +433,7 @@ def deleteBottomXPercent(now, deletionPercentage, numDaysBack, removeStartDate=F
 	dividend = 100 / deletionPercentage
 	daysBack = numDaysBack
 	now = now
-	
+
 	createdAtEnd = now - datetime.timedelta(days=daysBack)
 	createdAtStart = now - datetime.timedelta(days=daysBack+1)
 
@@ -468,7 +474,7 @@ def deleteBottomXPercent(now, deletionPercentage, numDaysBack, removeStartDate=F
 		endMin = '0' + str(endMin)
 
 	formattedEnd = str(endYear) + '/' + str(endMonth) + '/' + str(endDay) + ' ' + str(endHour) + ':' + str(endMin) + ':00 +0000'
-	
+
 	removalSet = []
 	print
 	print "--------- Deleting bottom", deletionPercentage, "percent of tracks from",
@@ -590,7 +596,5 @@ def masterProcess():
 
 if __name__ == '__main__':
 
-	
-	masterProcess()
 
-	
+	masterProcess()

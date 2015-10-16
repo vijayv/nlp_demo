@@ -9,9 +9,9 @@ import time
 from multiprocessing import Process, Queue, Pool
 from bs4 import BeautifulSoup
 
-mongoClient = pymongo.MongoClient()
-mongoClient.soundcloudninjas.authenticate('soundcloudninjas', 'p6BxbwUP')
-db = mongoClient.soundcloudninjas
+uri = 'mongodb://soundcloudninjas:gunners123@ds031883.mongolab.com:31883/soundcloudanalytics'
+mongoClient = pymongo.MongoClient(uri)
+db = mongoClient.soundcloundanalytics
 
 #trackSnapshotsDb = db.trackSnapshots
 activeTrackDirectory = db.activeTrackDirectory
@@ -59,7 +59,7 @@ def trackSnapshot(url=None):
 			except Exception as e:
 				print "Error getting trackId! ---", e
 				tempSnapshot['trackId'] = None
-				
+
 
 			# get play count
 			try:
@@ -75,7 +75,7 @@ def trackSnapshot(url=None):
 			except Exception as e:
 				print "Error getting play count! ---", e
 				tempSnapshot['trackPlayCount'] = None
-				
+
 
 			# get likes count
 			try:
@@ -91,7 +91,7 @@ def trackSnapshot(url=None):
 			except Exception as e:
 				print "Error getting like count! ---", e
 				tempSnapshot['trackLikeCount'] = None
-				
+
 
 			# get comments Count
 			try:
@@ -107,7 +107,7 @@ def trackSnapshot(url=None):
 			except Exception as e:
 				print "Error getting comment count! ---", e
 				tempSnapshot['trackCommentCount'] = None
-				
+
 
 			# get download count
 			try:
@@ -123,7 +123,7 @@ def trackSnapshot(url=None):
 			except Exception as e:
 				print "Error getting download count! ---", e
 				tempSnapshot['trackDownloadCount'] = None
-				
+
 
 			# get repost count
 			try:
@@ -147,7 +147,7 @@ def trackSnapshot(url=None):
 			except Exception as e:
 				print "Error getting reposts count! ---", e
 				tempSnapshot['repostsCount'] = None
-				
+
 
 		except Exception as e:
 			print "Error getting track info! ---", e
@@ -188,7 +188,7 @@ def getAllSnapshots():
 
 	actualNumTracks = len(trackUrls)
 	numTracks = actualNumTracks / 4
-	
+
 	print
 	print "----------------Tracking", actualNumTracks, "tracks..."
 	print
