@@ -1,4 +1,88 @@
 {% extends "base.html" %}
 {% block content %}
-  <p>{{ collections }}</p>
+  <div class="row">
+    <div class="col-xs-6 col-md-2">
+    </div>
+    <div id="content" class="col-xs-12 col-md-10">
+    </div>
+  </div>
+
+  <script type="text/babel">
+
+    var songs = [
+      {artist: "Pete Hunt", song: "This is one comment", created_date: "12/1/2014"},
+      {artist: "Jordan Walke", song: "This is *another* comment", created_date: "12/2/2014"},
+      {artist: "LIka", song: "That comment", created_date: "12/3/2014"},
+      {artist: "Miae", song: "This comment", created_date: "12/5/2014"},
+    ];
+
+    var SongList = React.createClass({
+      getInitialState: function() {
+        return {
+          songList: [],
+        }
+      },
+
+      componentDidMount: function() {
+        $.ajax({
+          url: "/api/v1/tracks",
+          dataType: 'json',
+          cache: false,
+          success: function(data) {
+            this.setState({songList: data});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error("/api/v1/tracks", status, err.toString());
+          }.bind(this)
+        });
+      },
+
+      render: function() {
+        var songNodes = this.state.songList.map(function(song) {
+          return (
+            <Song
+              trackUsername={song.trackUsername}
+              trackTitle={song.trackTitle}
+              trackGenre={song.trackGenre}
+              trackcurrentLikes={song.currentLikes} />
+          )
+        });
+
+        return (
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Artist Name</th>
+                <th>Song Name</th>
+                <th>Genre</th>
+                <th>Play Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {songNodes}
+            </tbody>
+          </table>
+        );
+      }
+    });
+
+    var Song = React.createClass({
+      render: function() {
+        return (
+          <tr>
+            <td>{this.props.trackUsername}</td>
+            <td>{this.props.trackTitle}</td>
+            <td>{this.props.trackGenre}</td>
+            <td>{this.props.trackcurrentLikes}</td>
+          </tr>
+        )
+      }
+    });
+
+    ReactDOM.render(
+      <SongList />,
+      document.getElementById("content")
+    )
+
+  </script>
 {% endblock %}
