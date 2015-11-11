@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="row">
-    <div class="col-xs-6 col-md-2">
+    <div class="col-xs-6 col-lg-4">
+
+      <div id="sidebar-button-container">
+        <button id="plays" class="sidebar-param-button">plays</button>
+        <button id="likes" class="sidebar-param-button">likes</button>
+        <button id="reposts" class="sidebar-param-button">reposts</button>
+        <button id="comments" class="sidebar-param-button">comments</button>
+      </div>
+
     </div>
-    <div id="content" class="col-xs-12 col-md-10">
+    <div id="content" class="col-xs-12 col-sm-6 col-lg-8">
     </div>
   </div>
 
@@ -29,6 +37,7 @@
           dataType: 'json',
           cache: false,
           success: function(data) {
+            console.log(data);
             this.setState({songList: data});
           }.bind(this),
           error: function(xhr, status, err) {
