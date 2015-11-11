@@ -33,7 +33,7 @@
 
       componentDidMount: function() {
         $.ajax({
-          url: "/api/v1/tracks",
+          url: "/api/v1/tracks?fields=track_user_name;track_title;track_genre;current_plays&limit=100&sort=current_plays",
           dataType: 'json',
           cache: false,
           success: function(data) {
@@ -48,12 +48,13 @@
 
       render: function() {
         var songNodes = this.state.songList.map(function(song) {
+          console.log(song);
           return (
             <Song
               trackUsername={song.trackUsername}
               trackTitle={song.trackTitle}
               trackGenre={song.trackGenre}
-              trackcurrentLikes={song.currentLikes} />
+              trackcurrentPlays={song.currentPlays} />
           )
         });
 
@@ -82,7 +83,7 @@
             <td>{this.props.trackUsername}</td>
             <td>{this.props.trackTitle}</td>
             <td>{this.props.trackGenre}</td>
-            <td>{this.props.trackcurrentLikes}</td>
+            <td>{this.props.trackcurrentPlays}</td>
           </tr>
         )
       }
@@ -91,7 +92,43 @@
     ReactDOM.render(
       <SongList />,
       document.getElementById("content")
-    )
+    );
+
+    var LikesButton = React.createClass({
+      getInitialState: function() {
+        return {liked: false};
+      },
+      handleClick: function(event) {
+        this.setState({liked: !this.state.liked});
+
+        $.ajax({
+            url: "/api/v1/tracks?fields=track_user_name;track_title;track_genre;current_likes&limit=100&sort=current_likes",
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+              console.log(data);
+              this.setState({songList: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.error("/api/v1/tracks", status, err.toString());
+            }.bind(this)
+          });
+        },
+
+      render: function() {
+        var text = this.state.liked ? 'like' : 'haven\'t liked';
+        return (
+          <span onClick={this.handleClick}>
+            likes
+          </span>
+        );
+      }
+    });
+
+    ReactDOM.render(
+      <LikesButton />,
+      document.getElementById('likes')
+    );
 
   </script>
 {% endblock %}

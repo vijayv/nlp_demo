@@ -39,6 +39,7 @@ class APIFilterConstants(Enum):
 
 class APIv1:
     def is_valid_field(self, argval):
+        print argval
         return str(argval) in APIFieldConstants.__members__
 
     def to_field_params(self, arglist):
