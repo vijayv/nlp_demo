@@ -1,44 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="row">
-    <div class="col-xs-6 col-lg-4">
-
-      <div id="sidebar-button-container">
-        <button id="plays" class="sidebar-param-button">plays</button>
-        <button id="likes" class="sidebar-param-button">likes</button>
-        <button id="reposts" class="sidebar-param-button">reposts</button>
-        <button id="comments" class="sidebar-param-button">comments</button>
-      </div>
-
-    </div>
-    <div id="content" class="col-xs-12 col-sm-6 col-lg-8">
-    </div>
+  <div id="content" class="row">
   </div>
 
   <script type="text/babel">
 
-    var songs = [
-      {artist: "Pete Hunt", song: "This is one comment", created_date: "12/1/2014"},
-      {artist: "Jordan Walke", song: "This is *another* comment", created_date: "12/2/2014"},
-      {artist: "LIka", song: "That comment", created_date: "12/3/2014"},
-      {artist: "Miae", song: "This comment", created_date: "12/5/2014"},
-    ];
+    var TrackExplorer = React.createClass({
 
-    var SongList = React.createClass({
       getInitialState: function() {
         return {
-          songList: [],
+          song_list: [],
         }
       },
 
       componentDidMount: function() {
+        this.sortTracksBy("plays");
+      },
+
+      updateStateData: function(update_url) {
         $.ajax({
-          url: "/api/v1/tracks?fields=track_user_name;track_title;track_genre;current_plays&limit=100&sort=current_plays",
+          url: update_url,
           dataType: 'json',
           cache: false,
           success: function(data) {
-            console.log(data);
-            this.setState({songList: data});
+            this.setState({song_list: data});
           }.bind(this),
           error: function(xhr, status, err) {
             console.error("/api/v1/tracks", status, err.toString());
@@ -46,15 +31,76 @@
         });
       },
 
+      sortTracksBy: function(val) {
+        var base_uri = "/api/v1/tracks?fields=track_user_name;track_title;track_genre;current_plays;current_likes;current_reposts;current_comments;track_url&limit=100&sort="
+        switch (val) {
+          case "plays":
+            this.updateStateData(base_uri + "current_plays");
+            break;
+          case "likes":
+            this.updateStateData(base_uri + "current_likes");
+            break;
+          case "reposts":
+            this.updateStateData(base_uri + "current_reposts");
+            break;
+          case "comments":
+            this.updateStateData(base_uri + "current_comments");
+            break;
+          default:
+            this.updateStateData(base_uri + "current_likes");
+            break;
+        }
+      },
+
       render: function() {
-        var songNodes = this.state.songList.map(function(song) {
-          console.log(song);
+        return (
+          <div>
+            <div id="sidebar sidebar-button-container" className="col-xs-6 col-lg-2">
+              <FilterButton id="plays" key="plays" sort_by={this.sortTracksBy}>plays</FilterButton>
+              <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>likes</FilterButton>
+              <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>reposts</FilterButton>
+              <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>comments</FilterButton>
+            </div>
+            <div className="col-xs-12 col-sm-6 col-lg-10">
+              <SongList song_list={this.state.song_list} />
+            </div>
+          </div>
+        );
+      }
+    });
+
+    var FilterButton = React.createClass({
+      clickfn: function() {
+        var sort = this.props.id;
+        this.props.sort_by(sort);
+      },
+
+      render: function() {
+        return (
+          <button
+            id={this.props.id}
+            className="sidebar-param-button"
+            onClick={this.clickfn}>
+            {this.props.children}
+          </button>
+        )
+      }
+    });
+
+    var SongList = React.createClass({
+      render: function() {
+        var songNodes = this.props.song_list.map(function(song) {
           return (
             <Song
+              key={song.trackTitle}
               trackUsername={song.trackUsername}
               trackTitle={song.trackTitle}
               trackGenre={song.trackGenre}
-              trackcurrentPlays={song.currentPlays} />
+              trackcurrentPlays={song.currentPlays}
+              trackcurrentLikes={song.currentLikes}
+              trackcurrentReposts={song.currentReposts}
+              trackcurrentComments={song.currentComments}
+              trackUrl={song.trackUrl} />
           )
         });
 
@@ -65,7 +111,10 @@
                 <th>Artist Name</th>
                 <th>Song Name</th>
                 <th>Genre</th>
-                <th>Play Count</th>
+                <th>Plays</th>
+                <th>Likes</th>
+                <th>Reposts</th>
+                <th>Comments</th>
               </tr>
             </thead>
             <tbody>
@@ -81,54 +130,21 @@
         return (
           <tr>
             <td>{this.props.trackUsername}</td>
-            <td>{this.props.trackTitle}</td>
+            <td><a href={this.props.trackUrl}>{this.props.trackTitle}</a></td>
             <td>{this.props.trackGenre}</td>
             <td>{this.props.trackcurrentPlays}</td>
+            <td>{this.props.trackcurrentLikes}</td>
+            <td>{this.props.trackcurrentReposts}</td>
+            <td>{this.props.trackcurrentComments}</td>
           </tr>
         )
       }
     });
 
-    ReactDOM.render(
-      <SongList />,
-      document.getElementById("content")
-    );
-
-    var LikesButton = React.createClass({
-      getInitialState: function() {
-        return {liked: false};
-      },
-      handleClick: function(event) {
-        this.setState({liked: !this.state.liked});
-
-        $.ajax({
-            url: "/api/v1/tracks?fields=track_user_name;track_title;track_genre;current_likes&limit=100&sort=current_likes",
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-              console.log(data);
-              this.setState({songList: data});
-            }.bind(this),
-            error: function(xhr, status, err) {
-              console.error("/api/v1/tracks", status, err.toString());
-            }.bind(this)
-          });
-        },
-
-      render: function() {
-        var text = this.state.liked ? 'like' : 'haven\'t liked';
-        return (
-          <span onClick={this.handleClick}>
-            likes
-          </span>
-        );
-      }
-    });
-
-    ReactDOM.render(
-      <LikesButton />,
-      document.getElementById('likes')
-    );
+  ReactDOM.render(
+    <TrackExplorer />,
+    document.getElementById('content')
+  );
 
   </script>
 {% endblock %}
