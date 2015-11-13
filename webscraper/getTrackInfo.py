@@ -187,15 +187,6 @@ def getAllSnapshots():
 		trackUrls.append(tempUrl)
 		print tempUrl
 
-		# if count < activeTrackDirectory.count():
-		# #if count < 101:
-		# 	count += 1
-		# 	print count
-		# 	trackUrls.append(tempUrl)
-
-		# else:
-		# 	break
-
 	actualNumTracks = len(trackUrls)
 	numTracks = actualNumTracks / 4
 
