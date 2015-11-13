@@ -418,6 +418,9 @@ def getNewTracks(year=0, month=0, day=0, hour=0, halfHour=0):
 			except:
 				print "Poster User Name error!"
 
+			tempTrack['snapshots'] = []
+			tempTrack['dailyAggregatePlays'] = []
+
 			returnedTracks.append(tempTrack)
 
 		offset += (i * pageSize)
@@ -562,7 +565,7 @@ def masterProcess():
 		print
 
 		if now.hour == 0 and now.minute >= 30:
-		# if now.hour == 9 and now.minute < 30:
+		# if now.hour == 22 and now.minute >= 30:
 			getSnapshotsStartTime = datetime.datetime.now()
 			getAllSnapshots()
 

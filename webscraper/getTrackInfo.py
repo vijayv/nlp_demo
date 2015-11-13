@@ -9,9 +9,15 @@ import time
 from multiprocessing import Process, Queue, Pool
 from bs4 import BeautifulSoup
 
-uri = 'mongodb://soundcloudninjas:gunners123@ds031883.mongolab.com:31883/soundcloudanalytics'
-mongoClient = pymongo.MongoClient(uri)
-db = mongoClient.soundcloundanalytics
+mongoClient = pymongo.MongoClient('ds031883.mongolab.com',
+								 port=31883,
+			                     connectTimeoutMS=30000,
+			                     socketTimeoutMS=None,
+			                     socketKeepAlive=True)
+db = mongoClient.soundcloudanalytics
+db.authenticate('soundcloudninjas',
+				password='gunners123',
+				mechanism='SCRAM-SHA-1')
 
 #trackSnapshotsDb = db.trackSnapshots
 activeTrackDirectory = db.activeTrackDirectory
@@ -173,18 +179,22 @@ def getAllSnapshots():
 
 	trackUrls = []
 	dbTracks = activeTrackDirectory.find()
+	print activeTrackDirectory.count()
 	count = 0
 
 	for track in dbTracks:
 		tempUrl = track['trackUrl']
+		trackUrls.append(tempUrl)
+		print tempUrl
 
-		if count < activeTrackDirectory.count():
-		#if count < 101:
-			count += 1
-			trackUrls.append(tempUrl)
+		# if count < activeTrackDirectory.count():
+		# #if count < 101:
+		# 	count += 1
+		# 	print count
+		# 	trackUrls.append(tempUrl)
 
-		else:
-			break
+		# else:
+		# 	break
 
 	actualNumTracks = len(trackUrls)
 	numTracks = actualNumTracks / 4
