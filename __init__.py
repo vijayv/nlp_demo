@@ -18,6 +18,15 @@ db.authenticate('soundcloudninjas',
 
 sca_api = APIv1()
 
+# res = db.activeTrackDirectory.find()
+# for i in res:
+#     try:
+#         x = i['snapshots']
+#         y = i['trackId']
+#         print y, x
+#     except:
+#         continue
+
 @app.route("/")
 def home():
     return render_template('index.html')

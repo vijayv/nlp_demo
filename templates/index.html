@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+
   <div id="content" class="row">
   </div>
 
@@ -23,6 +24,7 @@
           dataType: 'json',
           cache: false,
           success: function(data) {
+            console.log(data);
             this.setState({song_list: data});
           }.bind(this),
           error: function(xhr, status, err) {
@@ -32,7 +34,7 @@
       },
 
       sortTracksBy: function(val) {
-        var base_uri = "/api/v1/tracks?fields=track_user_name;track_title;track_genre;current_plays;current_likes;current_reposts;current_comments;track_url&limit=100&sort="
+        var base_uri = "/api/v1/tracks?fields=track_id;track_user_name;track_title;track_genre;current_plays;current_likes;current_reposts;current_comments;track_url&limit=100&sort="
         switch (val) {
           case "plays":
             this.updateStateData(base_uri + "current_plays");
@@ -55,15 +57,18 @@
       render: function() {
         return (
           <div>
+
             <div id="sidebar sidebar-button-container" className="col-xs-6 col-lg-2">
               <FilterButton id="plays" key="plays" sort_by={this.sortTracksBy}>plays</FilterButton>
               <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>likes</FilterButton>
               <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>reposts</FilterButton>
               <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>comments</FilterButton>
             </div>
+
             <div className="col-xs-12 col-sm-6 col-lg-10">
               <SongList song_list={this.state.song_list} />
             </div>
+
           </div>
         );
       }
@@ -100,7 +105,8 @@
               trackcurrentLikes={song.currentLikes}
               trackcurrentReposts={song.currentReposts}
               trackcurrentComments={song.currentComments}
-              trackUrl={song.trackUrl} />
+              trackUrl={song.trackUrl}
+              trackId={song.trackId} />
           )
         });
 
@@ -125,10 +131,87 @@
       }
     });
 
+    var SingleTrackExplorer = React.createClass({
+      getInitialState: function() {
+        return {
+          track_data: {dailyPlays: []},
+        }
+      },
+
+      componentWillMount: function() {
+        console.log(this.props.trackId);
+        this.getTrackData(this.props.trackId);
+      },
+
+      updateStateData: function(update_url) {
+        console.log(update_url);
+        $.ajax({
+          url: update_url,
+          dataType: 'json',
+          cache: false,
+          success: function(data) {
+            console.log(data.dailyAggregatePlays);
+            this.setState({track_data: data.dailyAggregatePlays});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error("/api/v1/track", status, err.toString());
+          }.bind(this)
+        });
+      },
+
+      getTrackData: function(val) {
+        var base_uri = "/api/v1/track?track_id=";
+        var trackId = val;
+        var formattedUrl = base_uri+trackId;
+        this.updateStateData(formattedUrl);
+        console.log(formattedUrl);
+      },
+
+      render: function() {
+        console.log(this.state.track_data);
+        return (
+          <div>
+
+            <div id="sidebar sidebar-button-container" className="col-xs-6 col-lg-2">
+              <FilterButton id="plays" key="plays" sort_by={this.sortTracksBy}>plays</FilterButton>
+              <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>likes</FilterButton>
+              <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>reposts</FilterButton>
+              <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>comments</FilterButton>
+            </div>
+
+            <div className="col-xs-12 col-sm-6 col-lg-10">
+              <SingleTrackData track_data={this.state.track_data} />
+            </div>
+
+          </div>
+        );
+      }
+    });
+
+    var SingleTrackData = React.createClass({
+      render: function() {
+        console.log('SingleTrackData object: '+this.props.track_data[0]);
+        return <ul>{this.createItems(this.props.track_data)}</ul>;},
+
+        createItems: function(items) {
+          var output = [];
+          for (var i = 0; i < items.length; i++) {output.push(<li>{items[i]}</li>);
+        } return output;
+      }
+    });
+
     var Song = React.createClass({
+      songClickfn: function() {
+        console.log(this.props.trackId);
+        ReactDOM.render(
+          <SingleTrackExplorer trackId={this.props.trackId}/>,
+          document.getElementById('content')
+        );
+      },
+
       render: function() {
         return (
-          <tr>
+          <tr onClick={this.songClickfn}>
             <td>{this.props.trackUsername}</td>
             <td><a href={this.props.trackUrl}>{this.props.trackTitle}</a></td>
             <td>{this.props.trackGenre}</td>
