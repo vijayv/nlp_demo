@@ -177,6 +177,7 @@
               <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>likes</FilterButton>
               <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>reposts</FilterButton>
               <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>comments</FilterButton>
+              <BackButton id="backButton">back</BackButton>
             </div>
 
             <div className="col-xs-12 col-sm-6 col-lg-10">
@@ -185,6 +186,26 @@
 
           </div>
         );
+      }
+    });
+
+    var BackButton = React.createClass({
+      clickfn: function() {
+              ReactDOM.render(
+          <TrackExplorer />,
+          document.getElementById('content')
+        );
+      },
+
+      render: function() {
+        return (
+          <button
+            id={this.props.id}
+            className="sidebar-param-button"
+            onClick={this.clickfn}>
+            {this.props.children}
+          </button>
+        )
       }
     });
 
