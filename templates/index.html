@@ -70,7 +70,7 @@
           </div>
         );
       }
-    });
+    }); // End TrackExplorer
 
     var FilterButton = React.createClass({
       clickfn: function() {
@@ -89,7 +89,7 @@
           </button>
         )
       }
-    });
+    }); // End FilterButton
 
     var SongList = React.createClass({
       render: function() {
@@ -128,7 +128,7 @@
           </table>
         );
       }
-    });
+    }); // End SongList
 
     var SingleTrackExplorer = React.createClass({
       getInitialState: function() {
@@ -173,7 +173,7 @@
               <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>likes</FilterButton>
               <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>reposts</FilterButton>
               <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>comments</FilterButton>
-              <BackButton id="backButton">back</BackButton>
+              // TODO Implement Reset
             </div>
 
             <div className="col-xs-12 col-sm-6 col-lg-10">
@@ -183,27 +183,7 @@
           </div>
         );
       }
-    });
-
-    var BackButton = React.createClass({
-      clickfn: function() {
-              ReactDOM.render(
-          <TrackExplorer />,
-          document.getElementById('content')
-        );
-      },
-
-      render: function() {
-        return (
-          <button
-            id={this.props.id}
-            className="sidebar-param-button"
-            onClick={this.clickfn}>
-            {this.props.children}
-          </button>
-        )
-      }
-    });
+    }); // End SingleTrackExplorer
 
     var SingleTrackData = React.createClass({
       render: function() {
@@ -214,10 +194,11 @@
           for (var i = 0; i < items.length; i++) {output.push(<li>{items[i]}</li>);
         } return output;
       }
-    });
+    }); // End SingleTrackData
 
     var Song = React.createClass({
       songClickfn: function() {
+        // TODO Reimplement this in a more React oriented way
         ReactDOM.render(
           <SingleTrackExplorer trackId={this.props.trackId}/>,
           document.getElementById('content')
@@ -227,8 +208,11 @@
       render: function() {
         return (
           <tr onClick={this.songClickfn}>
+            <td>
+              <span className="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+              <a href={this.props.trackUrl}>{this.props.trackTitle}</a>
+            </td>
             <td>{this.props.trackUsername}</td>
-            <td><a href={this.props.trackUrl}>{this.props.trackTitle}</a></td>
             <td>{this.props.trackGenre}</td>
             <td>{this.props.trackcurrentPlays}</td>
             <td>{this.props.trackcurrentLikes}</td>
@@ -237,7 +221,7 @@
           </tr>
         )
       }
-    });
+    }); // End Song
 
   ReactDOM.render(
     <TrackExplorer />,
