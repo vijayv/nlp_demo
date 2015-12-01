@@ -24,7 +24,6 @@
           dataType: 'json',
           cache: false,
           success: function(data) {
-            console.log(data);
             this.setState({song_list: data});
           }.bind(this),
           error: function(xhr, status, err) {
@@ -139,18 +138,16 @@
       },
 
       componentWillMount: function() {
-        console.log(this.props.trackId);
+        g(this.props.trackId);
         this.getTrackData(this.props.trackId);
       },
 
       updateStateData: function(update_url) {
-        console.log(update_url);
         $.ajax({
           url: update_url,
           dataType: 'json',
           cache: false,
           success: function(data) {
-            console.log(data.dailyAggregatePlays);
             this.setState({track_data: data.dailyAggregatePlays});
           }.bind(this),
           error: function(xhr, status, err) {
@@ -164,11 +161,10 @@
         var trackId = val;
         var formattedUrl = base_uri+trackId;
         this.updateStateData(formattedUrl);
-        console.log(formattedUrl);
+        (formattedUrl);
       },
 
       render: function() {
-        console.log(this.state.track_data);
         return (
           <div>
 
@@ -211,7 +207,6 @@
 
     var SingleTrackData = React.createClass({
       render: function() {
-        console.log('SingleTrackData object: '+this.props.track_data[0]);
         return <ul>{this.createItems(this.props.track_data)}</ul>;},
 
         createItems: function(items) {
@@ -223,7 +218,6 @@
 
     var Song = React.createClass({
       songClickfn: function() {
-        console.log(this.props.trackId);
         ReactDOM.render(
           <SingleTrackExplorer trackId={this.props.trackId}/>,
           document.getElementById('content')
