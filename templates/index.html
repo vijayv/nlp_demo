@@ -56,19 +56,18 @@
 
       render: function() {
         return (
-          <div>
-
-            <div id="sidebar sidebar-button-container" className="col-xs-6 col-lg-2">
-              <FilterButton id="plays" key="plays" sort_by={this.sortTracksBy}>plays</FilterButton>
-              <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>likes</FilterButton>
-              <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>reposts</FilterButton>
-              <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>comments</FilterButton>
+          <div className="row">
+            <div className="col-xs-6 col-lg-2">
+              <div className="btn-group-vertical" role="group" aria-label="...">
+                <FilterButton id="plays" key="plays" sort_by={this.sortTracksBy}>Plays</FilterButton>
+                <FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>Likes</FilterButton>
+                <FilterButton id="reposts" key="reposts" sort_by={this.sortTracksBy}>Reposts</FilterButton>
+                <FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>Comments</FilterButton>
+              </div>
             </div>
-
             <div className="col-xs-12 col-sm-6 col-lg-10">
               <SongList song_list={this.state.song_list} />
             </div>
-
           </div>
         );
       }
@@ -84,8 +83,9 @@
         return (
           <button
             id={this.props.id}
-            className="btn sidebar-param-button"
-            onClick={this.clickfn}>
+            className="btn btn-default"
+            onClick={this.clickfn}
+            type="button">
             {this.props.children}
           </button>
         )
