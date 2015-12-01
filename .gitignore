@@ -1,2 +1,5 @@
 *.pyc
 soundcloudninjas
+.ropeproject
+.DS*
+*.swp
