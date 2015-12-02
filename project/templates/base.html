@@ -9,14 +9,7 @@
     {% endif %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bower_components/react/JSXTransformer.js') }}"></script>
-    <script src="{{ url_for('static', filename='bower_components/react-dom/react-dom.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-    <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <!-- Project Specific Files -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
@@ -28,9 +21,17 @@
           <li role="presentation"><a href="#">Artists</a></li>
         </ul>
       </div>
+      <div id="content" class="row top-buffer"></div>
       {% block content %}
       {% endblock %}
     </div>
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/react/JSXTransformer.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/react-dom/react-dom.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>
   </body>
 
 </html>
