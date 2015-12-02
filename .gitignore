@@ -3,3 +3,4 @@ soundcloudninjas
 .ropeproject
 .DS*
 *.swp
+node_modules
