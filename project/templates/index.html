@@ -4,7 +4,8 @@
   <div id="content" class="row top-buffer">
   </div>
 
-  <script type="text/babel">
+  <script type="text/jsx">
+    /*** @jsx React.DOM */
 
     var TrackExplorer = React.createClass({
 
@@ -225,7 +226,7 @@
       }
     }); // End Song
 
-  ReactDOM.render(
+  ReactDom.render(
     <TrackExplorer />,
     document.getElementById('content')
   );
