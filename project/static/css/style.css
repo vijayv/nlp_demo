@@ -6,6 +6,11 @@ body {
   margin-top: 5px;
 }
 
+h3 {
+  margin: 0px;
+  padding: 0px;
+}
+
 .top-buffer {
   margin-top:20px;
 }

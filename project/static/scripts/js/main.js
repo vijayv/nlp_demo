@@ -23192,72 +23192,58 @@ var Song = React.createClass({
 		iplayer_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + String(this.props.trackId) + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true";
 		return React.createElement(
 			'div',
-			{ className: 'row song' },
+			{ className: 'media' },
 			React.createElement(
 				'div',
-				{ className: 'row' },
-				React.createElement(
-					'div',
-					{ className: 'col-sm-12 col-md-12 col-lg-12' },
-					React.createElement(
-						'h3',
-						null,
-						React.createElement(
-							'a',
-							{ href: this.props.trackUrl },
-							this.props.trackTitle,
-							' '
-						),
-						React.createElement(
-							'small',
-							null,
-							this.props.trackUsername
-						)
-					),
-					React.createElement(
-						'p',
-						null,
-						this.props.trackGenre
-					)
-				)
+				{ className: 'media-left' },
+				React.createElement('iframe', { width: '200', height: '200', scrolling: 'no', src: iplayer_url })
 			),
 			React.createElement(
 				'div',
-				{ className: 'row' },
+				{ className: 'media-body' },
 				React.createElement(
-					'div',
-					{ className: 'col-sm-6 col-md-6 col-lg-6' },
-					React.createElement('iframe', { width: '100%', height: '200', scrolling: 'no', src: iplayer_url })
+					'h3',
+					null,
+					React.createElement(
+						'a',
+						{ href: this.props.trackUrl },
+						this.props.trackTitle,
+						' '
+					),
+					React.createElement(
+						'small',
+						null,
+						this.props.trackUsername
+					)
 				),
 				React.createElement(
-					'div',
-					{ className: 'col-sm-6 col-md-6 col-lg-6' },
-					React.createElement(
-						'p',
-						null,
-						'Track Id: ',
-						this.props.trackId
-					),
-					React.createElement(
-						'p',
-						null,
-						this.props.trackcurrentPlays
-					),
-					React.createElement(
-						'p',
-						null,
-						this.props.trackcurrentLikes
-					),
-					React.createElement(
-						'p',
-						null,
-						this.props.trackcurrentReposts
-					),
-					React.createElement(
-						'p',
-						null,
-						this.props.trackcurrentComments
-					)
+					'p',
+					null,
+					this.props.trackGenre
+				),
+				React.createElement(
+					'p',
+					null,
+					'Plays: ',
+					this.props.trackcurrentPlays
+				),
+				React.createElement(
+					'p',
+					null,
+					'Likes: ',
+					this.props.trackcurrentLikes
+				),
+				React.createElement(
+					'p',
+					null,
+					'Reposts: ',
+					this.props.trackcurrentReposts
+				),
+				React.createElement(
+					'p',
+					null,
+					'Comments: ',
+					this.props.trackcurrentComments
 				)
 			)
 		);

@@ -129,28 +129,21 @@ var Song = React.createClass({
 	render: function() {
 		iplayer_url =  "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" +  String(this.props.trackId) + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true";
 		return (
-			<div className="row song">
-				<div className="row">
-					<div className="col-sm-12 col-md-12 col-lg-12">
-						<h3>
-							<a href={this.props.trackUrl}>{this.props.trackTitle} </a>
-							<small>{this.props.trackUsername}</small>
-						</h3>
-						<p>{this.props.trackGenre}</p>
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-sm-6 col-md-6 col-lg-6">
-						<iframe width="100%" height="200" scrolling="no" src={iplayer_url}></iframe>
-					</div>
-					<div className="col-sm-6 col-md-6 col-lg-6">
-						<p>Track Id: {this.props.trackId}</p>
-						<p>{this.props.trackcurrentPlays}</p>
-						<p>{this.props.trackcurrentLikes}</p>
-						<p>{this.props.trackcurrentReposts}</p>
-						<p>{this.props.trackcurrentComments}</p>
-					</div>
-				</div>
+			<div className="media">
+			  <div className="media-left">
+		      <iframe width="200" height="200" scrolling="no" src={iplayer_url}></iframe>
+			  </div>
+			  <div className="media-body">
+					<h3>
+						<a href={this.props.trackUrl}>{this.props.trackTitle} </a>
+						<small>{this.props.trackUsername}</small>
+					</h3>
+					<p>{this.props.trackGenre}</p>
+					<p>Plays: {this.props.trackcurrentPlays}</p>
+					<p>Likes: {this.props.trackcurrentLikes}</p>
+					<p>Reposts: {this.props.trackcurrentReposts}</p>
+					<p>Comments: {this.props.trackcurrentComments}</p>
+			  </div>
 			</div>
 		)
 	}
