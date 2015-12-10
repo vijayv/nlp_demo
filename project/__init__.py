@@ -4,28 +4,28 @@ from bson.son import SON
 from APIv1 import APIv1, APIFieldConstants
 import pymongo
 import datetime
+
+
 app = Flask(__name__)
 
-mongoClient = pymongo.MongoClient('ds031883.mongolab.com',
-    					         port=31883,
-			                     connectTimeoutMS=30000,
-			                     socketTimeoutMS=None,
-			                     socketKeepAlive=True)
+# Connect to Mongo DB
+mongoClient = pymongo.MongoClient(
+    'ds031883.mongolab.com',
+    port=31883,
+    connectTimeoutMS=30000,
+    socketTimeoutMS=None,
+    socketKeepAlive=True
+    )
 db = mongoClient.soundcloudanalytics
-db.authenticate('soundcloudninjas',
-				password='gunners123',
-				mechanism='SCRAM-SHA-1')
+db.authenticate(
+    'soundcloudninjas',
+    password='gunners123',
+    mechanism='SCRAM-SHA-1'
+    )
 
+# Instantiate model constants
 sca_api = APIv1()
 
-# res = db.activeTrackDirectory.find()
-# for i in res:
-#     try:
-#         x = i['snapshots']
-#         y = i['trackId']
-#         print y, x
-#     except:
-#         continue
 
 @app.route("/")
 def home():
@@ -56,10 +56,14 @@ def apiv1tracks():
 
     find_params = {"currentPlays": {"$gte": 100}}
     if "fields" in request.args:
-        field_params = sca_api.to_field_params(request.args.get("fields").split(";"))
+        field_params = sca_api.to_field_params(
+            request.args.get("fields").split(";")
+            )
 
     if "sort" in request.args:
-        sort_params = sca_api.to_sort_params(request.args.get("sort").split(";"))
+        sort_params = sca_api.to_sort_params(
+            request.args.get("sort").split(";")
+            )
 
     if "limit" in request.args:
         limit = int(request.args.get("limit"))
@@ -101,7 +105,7 @@ def apiv1genres():
         [
             {"$group": {"_id": "$trackGenre", "count": {"$sum": 1}}},
             {"$sort": SON([("count", -1)])},
-            {"$limit": 20 }
+            {"$limit": 20}
         ]
     )["result"]]
 
