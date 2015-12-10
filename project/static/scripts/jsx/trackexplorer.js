@@ -1,3 +1,4 @@
+var SongStats = require('./singletrack.js');
 var TrackExplorer = React.createClass({
 
 	getInitialState: function() {
@@ -102,51 +103,39 @@ var SongList = React.createClass({
 		});
 
 		return (
-			<table className="table table-striped">
-				<thead>
-					<tr>
-						<th>Artist Name</th>
-						<th>SongName</th>
-						<th>Genre</th>
-						<th>Plays</th>
-						<th>Likes</th>
-						<th>Reposts</th>
-						<th>Comments</th>
-					</tr>
-				</thead>
-				<tbody>
-					{songNodes}
-				</tbody>
-			</table>
+			<div>
+				{songNodes}
+			</div>
 		);
 	}
 }); // End SongList
 
 var Song = React.createClass({
 
-	songClickfn: function() {
-		// TODO Reimplement this in a more React oriented way
-		console.log("songClickfn as")
-	},
-
 	render: function() {
 		return (
-			<tr>
-				<td>
-					<span
-						className="glyphicon glyphicon-menu-right"
-						aria-hidden="true"
-						onClick={this.songClickfn}>
-					</span>
-					<a href={this.props.trackUrl}>{this.props.trackTitle}</a>
-				</td>
-				<td>{this.props.trackUsername}</td>
-				<td>{this.props.trackGenre}</td>
-				<td>{this.props.trackcurrentPlays}</td>
-				<td>{this.props.trackcurrentLikes}</td>
-				<td>{this.props.trackcurrentReposts}</td>
-				<td>{this.props.trackcurrentComments}</td>
-			</tr>
+			<div className="row song">
+				<div className="row">
+					<div className="col-sm-12 col-md-12 col-lg-12">
+						<h3>
+							<a href={this.props.trackUrl}>{this.props.trackTitle}</a>
+							<small>{this.props.trackUsername}</small>
+						</h3>
+						<p>{this.props.trackGenre}</p>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-sm-6 col-md-6 col-lg-6">
+						<SongStats trackId={this.props.trackId}></SongStats>
+					</div>
+					<div className="col-sm-6 col-md-6 col-lg-6">
+						<p>{this.props.trackcurrentPlays}</p>
+						<p>{this.props.trackcurrentLikes}</p>
+						<p>{this.props.trackcurrentReposts}</p>
+						<p>{this.props.trackcurrentComments}</p>
+					</div>
+				</div>
+			</div>
 		)
 	}
 }); // End Song

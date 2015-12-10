@@ -2,6 +2,10 @@ h1 {
   color: purple;
 }
 
+.song {
+  margin-top: 5px;
+}
+
 .top-buffer {
   margin-top:20px;
 }

@@ -1,6 +1,7 @@
 from collections import defaultdict
 from enum import Enum
 
+
 class APIFieldConstants(Enum):
     current_comments = "currentComments"
     track_id = "trackId"

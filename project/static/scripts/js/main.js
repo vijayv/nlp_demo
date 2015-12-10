@@ -1,5 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var SingleTrackExplorer = require('./singletrack.js');
 var TrackExplorer = require('./trackexplorer.js');
 
 React.render(
@@ -8,8 +7,8 @@ React.render(
 );
 
 
-},{"./singletrack.js":2,"./trackexplorer.js":3}],2:[function(require,module,exports){
-var SingleTrackExplorer = React.createClass({displayName: "SingleTrackExplorer",
+},{"./trackexplorer.js":3}],2:[function(require,module,exports){
+var SongStats = React.createClass({displayName: "SongStats",
 	getInitialState: function() {
 		return {
 			track_data: {dailyPlays: []},
@@ -44,41 +43,19 @@ var SingleTrackExplorer = React.createClass({displayName: "SingleTrackExplorer",
 
 	render: function() {
 		return (
-			React.createElement("div", null, 
-
-				React.createElement("div", {id: "sidebar sidebar-button-container", className: "col-xs-6 col-lg-2"}, 
-					React.createElement(FilterButton, {id: "plays", key: "plays", sort_by: this.sortTracksBy}, "plays"), 
-					React.createElement(FilterButton, {id: "likes", key: "likes", sort_by: this.sortTracksBy}, "likes"), 
-					React.createElement(FilterButton, {id: "reposts", key: "reposts", sort_by: this.sortTracksBy}, "reposts"), 
-					React.createElement(FilterButton, {id: "comments", key: "comments", sort_by: this.sortTracksBy}, "comments"), 
-					"// TODO Implement Reset"
-				), 
-
-				React.createElement("div", {className: "col-xs-12 col-sm-6 col-lg-10"}, 
-					React.createElement(SingleTrackData, {track_data: this.state.track_data})
-				)
-
+			React.createElement("div", {className: "col-xs-12 col-sm-6 col-lg-10"}, 
+				React.createElement("p", null, this.state.track_data)
 			)
 		);
 	}
 }); // End SingleTrackExplorer
 
-var SingleTrackData = React.createClass({displayName: "SingleTrackData",
-	render: function() {
-		return React.createElement("ul", null, this.createItems(this.props.track_data));},
 
-		createItems: function(items) {
-			var output = [];
-			for (var i = 0; i < items.length; i++) {output.push(React.createElement("li", null, items[i]));
-		} return output;
-	}
-}); // End SingleTrackData
-
-
-module.exports = SingleTrackExplorer;
+module.exports = SongStats;
 
 
 },{}],3:[function(require,module,exports){
+var SongStats = require('./singletrack.js');
 var TrackExplorer = React.createClass({displayName: "TrackExplorer",
 
 	getInitialState: function() {
@@ -183,21 +160,8 @@ var SongList = React.createClass({displayName: "SongList",
 		});
 
 		return (
-			React.createElement("table", {className: "table table-striped"}, 
-				React.createElement("thead", null, 
-					React.createElement("tr", null, 
-						React.createElement("th", null, "Artist Name"), 
-						React.createElement("th", null, "SongName"), 
-						React.createElement("th", null, "Genre"), 
-						React.createElement("th", null, "Plays"), 
-						React.createElement("th", null, "Likes"), 
-						React.createElement("th", null, "Reposts"), 
-						React.createElement("th", null, "Comments")
-					)
-				), 
-				React.createElement("tbody", null, 
-					songNodes
-				)
+			React.createElement("div", null, 
+				songNodes
 			)
 		);
 	}
@@ -205,28 +169,29 @@ var SongList = React.createClass({displayName: "SongList",
 
 var Song = React.createClass({displayName: "Song",
 
-	songClickfn: function() {
-		// TODO Reimplement this in a more React oriented way
-		console.log("songClickfn as")
-	},
-
 	render: function() {
 		return (
-			React.createElement("tr", null, 
-				React.createElement("td", null, 
-					React.createElement("span", {
-						className: "glyphicon glyphicon-menu-right", 
-						"aria-hidden": "true", 
-						onClick: this.songClickfn}
-					), 
-					React.createElement("a", {href: this.props.trackUrl}, this.props.trackTitle)
+			React.createElement("div", {className: "row song"}, 
+				React.createElement("div", {className: "row"}, 
+					React.createElement("div", {className: "col-sm-12 col-md-12 col-lg-12"}, 
+						React.createElement("h3", null, 
+							React.createElement("a", {href: this.props.trackUrl}, this.props.trackTitle), 
+							React.createElement("small", null, this.props.trackUsername)
+						), 
+						React.createElement("p", null, this.props.trackGenre)
+					)
 				), 
-				React.createElement("td", null, this.props.trackUsername), 
-				React.createElement("td", null, this.props.trackGenre), 
-				React.createElement("td", null, this.props.trackcurrentPlays), 
-				React.createElement("td", null, this.props.trackcurrentLikes), 
-				React.createElement("td", null, this.props.trackcurrentReposts), 
-				React.createElement("td", null, this.props.trackcurrentComments)
+				React.createElement("div", {className: "row"}, 
+					React.createElement("div", {className: "col-sm-6 col-md-6 col-lg-6"}, 
+						React.createElement(SongStats, {trackId: this.props.trackId})
+					), 
+					React.createElement("div", {className: "col-sm-6 col-md-6 col-lg-6"}, 
+						React.createElement("p", null, this.props.trackcurrentPlays), 
+						React.createElement("p", null, this.props.trackcurrentLikes), 
+						React.createElement("p", null, this.props.trackcurrentReposts), 
+						React.createElement("p", null, this.props.trackcurrentComments)
+					)
+				)
 			)
 		)
 	}
@@ -235,4 +200,4 @@ var Song = React.createClass({displayName: "Song",
 module.exports = TrackExplorer;
 
 
-},{}]},{},[1])
+},{"./singletrack.js":2}]},{},[1])
