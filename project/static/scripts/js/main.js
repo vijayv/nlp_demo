@@ -1,6 +1,14 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var SingleTrackExplorer = require('./singletrack.js');
 var TrackExplorer = require('./trackexplorer.js');
 
+React.render(
+	React.createElement(TrackExplorer, null),
+	document.getElementById('content')
+);
+
+
+},{"./singletrack.js":2,"./trackexplorer.js":3}],2:[function(require,module,exports){
 var SingleTrackExplorer = React.createClass({displayName: "SingleTrackExplorer",
 	getInitialState: function() {
 		return {
@@ -66,13 +74,11 @@ var SingleTrackData = React.createClass({displayName: "SingleTrackData",
 	}
 }); // End SingleTrackData
 
-React.render(
-	React.createElement(TrackExplorer, null),
-	document.getElementById('content')
-);
+
+module.exports = SingleTrackExplorer;
 
 
-},{"./trackexplorer.js":2}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var TrackExplorer = React.createClass({displayName: "TrackExplorer",
 
 	getInitialState: function() {
@@ -123,7 +129,7 @@ var TrackExplorer = React.createClass({displayName: "TrackExplorer",
 	render: function() {
 		return (
 			React.createElement("div", {className: "row"}, 
-				React.createElement("div", {className: "col-xs-6 col-lg-2"}, 
+				React.createElement("div", {className: "col-sm-2 col-md-2"}, 
 					React.createElement("div", {className: "btn-group-vertical", role: "group", "aria-label": "..."}, 
 						React.createElement(FilterButton, {id: "plays", key: "plays", sort_by: this.sortTracksBy}, "Plays"), 
 						React.createElement(FilterButton, {id: "likes", key: "likes", sort_by: this.sortTracksBy}, "Likes"), 
@@ -131,7 +137,7 @@ var TrackExplorer = React.createClass({displayName: "TrackExplorer",
 						React.createElement(FilterButton, {id: "comments", key: "comments", sort_by: this.sortTracksBy}, "Comments")
 					)
 				), 
-				React.createElement("div", {className: "col-xs-12 col-sm-6 col-lg-10"}, 
+				React.createElement("div", {className: "col-sm-10 col-md-10"}, 
 					React.createElement(SongList, {song_list: this.state.song_list})
 				)
 			)
@@ -196,6 +202,35 @@ var SongList = React.createClass({displayName: "SongList",
 		);
 	}
 }); // End SongList
+
+var Song = React.createClass({displayName: "Song",
+
+	songClickfn: function() {
+		// TODO Reimplement this in a more React oriented way
+		console.log("songClickfn as")
+	},
+
+	render: function() {
+		return (
+			React.createElement("tr", null, 
+				React.createElement("td", null, 
+					React.createElement("span", {
+						className: "glyphicon glyphicon-menu-right", 
+						"aria-hidden": "true", 
+						onClick: this.songClickfn}
+					), 
+					React.createElement("a", {href: this.props.trackUrl}, this.props.trackTitle)
+				), 
+				React.createElement("td", null, this.props.trackUsername), 
+				React.createElement("td", null, this.props.trackGenre), 
+				React.createElement("td", null, this.props.trackcurrentPlays), 
+				React.createElement("td", null, this.props.trackcurrentLikes), 
+				React.createElement("td", null, this.props.trackcurrentReposts), 
+				React.createElement("td", null, this.props.trackcurrentComments)
+			)
+		)
+	}
+}); // End Song
 
 module.exports = TrackExplorer;
 

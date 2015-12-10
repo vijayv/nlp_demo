@@ -62,3 +62,6 @@ var SingleTrackData = React.createClass({
 		} return output;
 	}
 }); // End SingleTrackData
+
+
+module.exports = SingleTrackExplorer;

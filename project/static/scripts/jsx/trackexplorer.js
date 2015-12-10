@@ -48,7 +48,7 @@ var TrackExplorer = React.createClass({
 	render: function() {
 		return (
 			<div className="row">
-				<div className="col-xs-6 col-lg-2">
+				<div className="col-sm-2 col-md-2">
 					<div className="btn-group-vertical" role="group" aria-label="...">
 						<FilterButton id="plays" key="plays" sort_by={this.sortTracksBy}>Plays</FilterButton>
 						<FilterButton id="likes" key="likes" sort_by={this.sortTracksBy}>Likes</FilterButton>
@@ -56,7 +56,7 @@ var TrackExplorer = React.createClass({
 						<FilterButton id="comments" key="comments" sort_by={this.sortTracksBy}>Comments</FilterButton>
 					</div>
 				</div>
-				<div className="col-xs-12 col-sm-6 col-lg-10">
+				<div className="col-sm-10 col-md-10">
 					<SongList song_list={this.state.song_list} />
 				</div>
 			</div>
