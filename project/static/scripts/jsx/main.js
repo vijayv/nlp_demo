@@ -1,6 +1,6 @@
 var TrackExplorer = require('./trackexplorer.js');
 
-React.render(
+ReactDOM.render(
 	<TrackExplorer />,
 	document.getElementById('content')
 );

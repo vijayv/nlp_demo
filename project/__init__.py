@@ -52,7 +52,7 @@ def apiv1tracks():
     find_params = {}
     field_params = {}
     sort_params = [("_id", -1)]
-    limit = 100
+    limit = 10
 
     find_params = {"currentPlays": {"$gte": 100}}
     if "fields" in request.args:

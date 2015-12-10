@@ -1,9 +1,11 @@
 var SongStats = require('./singletrack.js');
+var Loader = require('halogen/ScaleLoader');
 var TrackExplorer = React.createClass({
 
 	getInitialState: function() {
 		return {
 			song_list: [],
+			loading_icon: "show",
 		}
 	},
 
@@ -12,12 +14,19 @@ var TrackExplorer = React.createClass({
 	},
 
 	updateStateData: function(update_url) {
+		this.setState({
+			loading_icon: "show",
+		});
+
 		$.ajax({
 			url: update_url,
 			dataType: 'json',
 			cache: false,
 			success: function(data) {
-				this.setState({song_list: data});
+				this.setState({
+					song_list: data,
+					loading_icon: "hidden",
+				});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error("/api/v1/tracks", status, err.toString());
@@ -58,6 +67,11 @@ var TrackExplorer = React.createClass({
 					</div>
 				</div>
 				<div className="col-sm-10 col-md-10">
+					<Loader
+						className={this.state.loading_icon}
+						color="#26A65B"
+						size="16px"
+						margin="4px"/>
 					<SongList song_list={this.state.song_list} />
 				</div>
 			</div>
@@ -125,9 +139,6 @@ var Song = React.createClass({
 					</div>
 				</div>
 				<div className="row">
-					<div className="col-sm-6 col-md-6 col-lg-6">
-						<SongStats trackId={this.props.trackId}></SongStats>
-					</div>
 					<div className="col-sm-6 col-md-6 col-lg-6">
 						<p>{this.props.trackcurrentPlays}</p>
 						<p>{this.props.trackcurrentLikes}</p>
