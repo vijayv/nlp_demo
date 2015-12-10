@@ -132,13 +132,15 @@ var Song = React.createClass({
 				<div className="row">
 					<div className="col-sm-12 col-md-12 col-lg-12">
 						<h3>
-							<a href={this.props.trackUrl}>{this.props.trackTitle}</a>
+							<a href={this.props.trackUrl}>{this.props.trackTitle} </a>
 							<small>{this.props.trackUsername}</small>
 						</h3>
 						<p>{this.props.trackGenre}</p>
 					</div>
 				</div>
 				<div className="row">
+					<div className="col-sm-6 col-md-6 col-lg-6">
+					</div>
 					<div className="col-sm-6 col-md-6 col-lg-6">
 						<p>{this.props.trackcurrentPlays}</p>
 						<p>{this.props.trackcurrentLikes}</p>

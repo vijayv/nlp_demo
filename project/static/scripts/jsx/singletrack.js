@@ -1,3 +1,5 @@
+var LineChart = require("react-chartjs").Line;
+
 var SongStats = React.createClass({
 	getInitialState: function() {
 		return {
@@ -32,10 +34,10 @@ var SongStats = React.createClass({
 	},
 
 	render: function() {
+		var chart_data = {datasets: [{data: this.state.track_data}]}
+		var chart_options = {}
 		return (
-			<div className="col-xs-12 col-sm-6 col-lg-10">
-				<p>{this.state.track_data}</p>
-			</div>
+			<LineChart data={chart_data} options={chart_options} width="600" height="250"/>
 		);
 	}
 }); // End SingleTrackExplorer

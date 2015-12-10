@@ -13,14 +13,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <ul class="nav nav-tabs">
-          <li role="presentation" class="active"><a href="#">Tracks</a></li>
-          <li role="presentation"><a href="#">Albums</a></li>
-          <li role="presentation"><a href="#">Artists</a></li>
-        </ul>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <img
+          src="{{ url_for('static', filename='images/sc_grey_152x80.png') }}"
+          class="navbar-left">
+        </img>
+        <h1 class="navbar-right nav-title">Sound Cloud Analytics</h1>
       </div>
+    </nav>
+    <div class="container">
       <div id="content" class="row top-buffer"></div>
       {% block content %}
       {% endblock %}

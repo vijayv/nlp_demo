@@ -1,5 +1,5 @@
-h1 {
-  color: purple;
+body {
+  padding-top: 150px;
 }
 
 .song {
@@ -8,4 +8,8 @@ h1 {
 
 .top-buffer {
   margin-top:20px;
+}
+
+.nav-title {
+  text-transform: uppercase;
 }

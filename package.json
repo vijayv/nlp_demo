@@ -22,6 +22,7 @@
     "babelify": "^7.2.0",
     "bower": "^1.6.8",
     "browserify": "^12.0.1",
+    "chart.js": "^1.0.2",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-browserify": "^0.5.1",
@@ -35,6 +36,9 @@
     "watchify": "^3.6.1"
   },
   "dependencies": {
-    "halogen": "^0.1.10"
+    "halogen": "^0.1.10",
+    "highcharts-release": "^4.1.10",
+    "react-chartjs": "^0.6.0",
+    "react-highcharts": "^5.0.6"
   }
 }
