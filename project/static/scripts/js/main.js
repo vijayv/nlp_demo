@@ -23077,7 +23077,7 @@ var TrackExplorer = React.createClass({
 	},
 
 	sortTracksBy: function (val) {
-		var base_uri = "/api/v1/tracks?fields=track_id;track_user_name;track_title;track_genre;current_plays;current_likes;current_reposts;current_comments;track_url&limit=100&sort=";
+		var base_uri = "/api/v1/tracks?fields=track_id;track_user_name;track_title;track_genre;current_plays;current_likes;current_reposts;current_comments;track_url&limit=10&sort=";
 		switch (val) {
 			case "plays":
 				this.updateStateData(base_uri + "current_plays");
@@ -23189,6 +23189,7 @@ var SongList = React.createClass({
 var Song = React.createClass({
 
 	render: function () {
+		iplayer_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" + String(this.props.trackId) + "&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true";
 		return React.createElement(
 			'div',
 			{ className: 'row song' },
@@ -23223,10 +23224,20 @@ var Song = React.createClass({
 			React.createElement(
 				'div',
 				{ className: 'row' },
-				React.createElement('div', { className: 'col-sm-6 col-md-6 col-lg-6' }),
 				React.createElement(
 					'div',
 					{ className: 'col-sm-6 col-md-6 col-lg-6' },
+					React.createElement('iframe', { width: '100%', height: '200', scrolling: 'no', src: iplayer_url })
+				),
+				React.createElement(
+					'div',
+					{ className: 'col-sm-6 col-md-6 col-lg-6' },
+					React.createElement(
+						'p',
+						null,
+						'Track Id: ',
+						this.props.trackId
+					),
 					React.createElement(
 						'p',
 						null,
