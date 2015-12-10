@@ -1,4 +1,78 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var TrackExplorer = require('./trackexplorer.js');
+
+var SingleTrackExplorer = React.createClass({displayName: "SingleTrackExplorer",
+	getInitialState: function() {
+		return {
+			track_data: {dailyPlays: []},
+		}
+	},
+
+	componentWillMount: function() {
+		this.getTrackData(this.props.trackId);
+	},
+
+	getTrackData: function(val) {
+		var base_uri = "/api/v1/track?track_id=";
+		var trackId = val;
+		var formattedUrl = base_uri + trackId;
+		this.updateStateData(formattedUrl);
+		return formattedUrl;
+	},
+
+	updateStateData: function(update_url) {
+		$.ajax({
+			url: update_url,
+			dataType: 'json',
+			cache: false,
+			success: function(data) {
+				this.setState({track_data: data.dailyAggregatePlays});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error("/api/v1/track", status, err.toString());
+			}.bind(this)
+		});
+	},
+
+	render: function() {
+		return (
+			React.createElement("div", null, 
+
+				React.createElement("div", {id: "sidebar sidebar-button-container", className: "col-xs-6 col-lg-2"}, 
+					React.createElement(FilterButton, {id: "plays", key: "plays", sort_by: this.sortTracksBy}, "plays"), 
+					React.createElement(FilterButton, {id: "likes", key: "likes", sort_by: this.sortTracksBy}, "likes"), 
+					React.createElement(FilterButton, {id: "reposts", key: "reposts", sort_by: this.sortTracksBy}, "reposts"), 
+					React.createElement(FilterButton, {id: "comments", key: "comments", sort_by: this.sortTracksBy}, "comments"), 
+					"// TODO Implement Reset"
+				), 
+
+				React.createElement("div", {className: "col-xs-12 col-sm-6 col-lg-10"}, 
+					React.createElement(SingleTrackData, {track_data: this.state.track_data})
+				)
+
+			)
+		);
+	}
+}); // End SingleTrackExplorer
+
+var SingleTrackData = React.createClass({displayName: "SingleTrackData",
+	render: function() {
+		return React.createElement("ul", null, this.createItems(this.props.track_data));},
+
+		createItems: function(items) {
+			var output = [];
+			for (var i = 0; i < items.length; i++) {output.push(React.createElement("li", null, items[i]));
+		} return output;
+	}
+}); // End SingleTrackData
+
+React.render(
+	React.createElement(TrackExplorer, null),
+	document.getElementById('content')
+);
+
+
+},{"./trackexplorer.js":2}],2:[function(require,module,exports){
 var TrackExplorer = React.createClass({displayName: "TrackExplorer",
 
 	getInitialState: function() {
@@ -123,104 +197,7 @@ var SongList = React.createClass({displayName: "SongList",
 	}
 }); // End SongList
 
-var SingleTrackExplorer = React.createClass({displayName: "SingleTrackExplorer",
-	getInitialState: function() {
-		return {
-			track_data: {dailyPlays: []},
-		}
-	},
-
-	componentWillMount: function() {
-		this.getTrackData(this.props.trackId);
-	},
-
-	getTrackData: function(val) {
-		var base_uri = "/api/v1/track?track_id=";
-		var trackId = val;
-		var formattedUrl = base_uri + trackId;
-		this.updateStateData(formattedUrl);
-		return formattedUrl;
-	},
-
-	updateStateData: function(update_url) {
-		$.ajax({
-			url: update_url,
-			dataType: 'json',
-			cache: false,
-			success: function(data) {
-				this.setState({track_data: data.dailyAggregatePlays});
-			}.bind(this),
-			error: function(xhr, status, err) {
-				console.error("/api/v1/track", status, err.toString());
-			}.bind(this)
-		});
-	},
-
-	render: function() {
-		return (
-			React.createElement("div", null, 
-
-				React.createElement("div", {id: "sidebar sidebar-button-container", className: "col-xs-6 col-lg-2"}, 
-					React.createElement(FilterButton, {id: "plays", key: "plays", sort_by: this.sortTracksBy}, "plays"), 
-					React.createElement(FilterButton, {id: "likes", key: "likes", sort_by: this.sortTracksBy}, "likes"), 
-					React.createElement(FilterButton, {id: "reposts", key: "reposts", sort_by: this.sortTracksBy}, "reposts"), 
-					React.createElement(FilterButton, {id: "comments", key: "comments", sort_by: this.sortTracksBy}, "comments"), 
-					"// TODO Implement Reset"
-				), 
-
-				React.createElement("div", {className: "col-xs-12 col-sm-6 col-lg-10"}, 
-					React.createElement(SingleTrackData, {track_data: this.state.track_data})
-				)
-
-			)
-		);
-	}
-}); // End SingleTrackExplorer
-
-var SingleTrackData = React.createClass({displayName: "SingleTrackData",
-	render: function() {
-		return React.createElement("ul", null, this.createItems(this.props.track_data));},
-
-		createItems: function(items) {
-			var output = [];
-			for (var i = 0; i < items.length; i++) {output.push(React.createElement("li", null, items[i]));
-		} return output;
-	}
-}); // End SingleTrackData
-
-var Song = React.createClass({displayName: "Song",
-
-	songClickfn: function() {
-		// TODO Reimplement this in a more React oriented way
-		console.log("songClickfn as")
-	},
-
-	render: function() {
-		return (
-			React.createElement("tr", null, 
-				React.createElement("td", null, 
-					React.createElement("span", {
-						className: "glyphicon glyphicon-menu-right", 
-						"aria-hidden": "true", 
-						onClick: this.songClickfn}
-					), 
-					React.createElement("a", {href: this.props.trackUrl}, this.props.trackTitle)
-				), 
-				React.createElement("td", null, this.props.trackUsername), 
-				React.createElement("td", null, this.props.trackGenre), 
-				React.createElement("td", null, this.props.trackcurrentPlays), 
-				React.createElement("td", null, this.props.trackcurrentLikes), 
-				React.createElement("td", null, this.props.trackcurrentReposts), 
-				React.createElement("td", null, this.props.trackcurrentComments)
-			)
-		)
-	}
-}); // End Song
-
-React.render(
-	React.createElement(TrackExplorer, null),
-	document.getElementById('content')
-);
+module.exports = TrackExplorer;
 
 
 },{}]},{},[1])
